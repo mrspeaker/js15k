@@ -13,6 +13,7 @@ function Car () {
   this.angVel = 0;
   this.angAcc = 0;
   this.isPlayer = false;
+  this.active = true;
 
   var max = 10;
   this.body = [
@@ -56,13 +57,15 @@ Car.prototype = {
     var drag = 0.99;
     var angDrag = 0.88;
 
-    if (keys[38]) { this.acc += accThrust; }
-    if (keys[40]) { this.acc -= accThrust; }
-    if (keys[37]) {
-      this.angAcc -= angAccThrust; // * (this.vel / 8);
-    }
-    if (keys[39]) {
-      this.angAcc += angAccThrust; // * (this.vel / 8);
+    if (this.active) {
+      if (keys[38]) { this.acc += accThrust; }
+      if (keys[40]) { this.acc -= accThrust; }
+      if (keys[37]) {
+        this.angAcc -= angAccThrust; // * (this.vel / 8);
+      }
+      if (keys[39]) {
+        this.angAcc += angAccThrust; // * (this.vel / 8);
+      }
     }
 
     var velo = this.vel + this.acc;
@@ -97,6 +100,10 @@ Car.prototype = {
     }
 
   },
+  explode: function () {
+    this.active = false;
+  },
+
   render: function (ctx) {
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -105,7 +112,8 @@ Car.prototype = {
     ctx.fillRect(-oneBlock, -oneBlock, oneBlock * 2, oneBlock * 3);
     ctx.restore();
 
-    this.body.forEach(function (p, i) {
+
+    this.active && this.body.forEach(function (p, i) {
       var row = i / 2 | 0;
       var col = i % 2;
       var op = row === 0 ? 60 : row === 2 ? 50 : 30;

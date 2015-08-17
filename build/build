@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Concats the source
+
+output="./build.js"
+tmp="./tmp.js"
+
+read -r -d '' test << EOF
+../src/Car.js
+../src/Game.js
+../src/main.js
+EOF
+
+cat $test>>$tmp
+
+uglifyjs -o $output $tmp
+rm $tmp
+
+echo "Size: "
+stat -f '%z' build.js

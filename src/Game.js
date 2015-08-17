@@ -21,7 +21,8 @@ Game.prototype = {
     this.cars.forEach(function (c1, i) {
       c1.update(dt, i === 0 ? keys : {}, tick);
       c1.isPlayer = i === 0;
-      this.cars.forEach(function (c2, j) {
+      // TODO: checks both ways.
+      this.cars.forEach(function (c2) {
         if (c2 === c1) { return; }
         // Check coll...
         var dx = c1.x - c2.x;
@@ -48,11 +49,11 @@ Game.prototype = {
     // Check all parts
     for (var i = 0; i < 6; i++) {
       var b1 = c1.body[i];
-      if (!b1[2]) continue;
+      //if (!b1[2]) continue;
 
       for (var j = 0; j < 6; j++) {
         var b2 = c2.body[j];
-        if (!b2[2]) continue;
+        //if (!b2[2]) continue;
 
         var dx = b1[0] - b2[0];
         var dy = b1[1] - b2[1];
@@ -60,10 +61,16 @@ Game.prototype = {
           //if (!c2.isPlayer) return;
           // HIT!
           //b1[2] -=1;
-          //b2[2] -=1;
+          b2[2] -=1;
+
           c2.acc = Math.random() * 20 - 10;
           c2.angAcc += (Math.random() - 0.5) * 0.5;
           c2.angle += Math.PI * 2;
+
+          if (j / 2 | 0 === 2 && b2[2] < 0) {
+            // explody.
+            c2.explode();
+          }
         }
       }
     }
