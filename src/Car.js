@@ -14,6 +14,7 @@ function Car () {
   this.angAcc = 0;
   this.isPlayer = false;
   this.active = true;
+  this.hitAt = Date.now();
 
   var max = 10;
   this.body = [
@@ -82,21 +83,26 @@ Car.prototype = {
     this.y += Math.sin(this.angle - Math.PI / 2) * this.vel;
     this.calcBody(tick);
 
+    return;
     if (this.x < 0) {
       this.x += 5;
-      this.angle -= Math.PI;
+      //this.angle -= Math.PI;
+      this.vel = -this.vel;
     }
     if (this.y < 0) {
       this.y += 5;
-      this.angle -= Math.PI;
+      //this.angle -= Math.PI;
+      this.vel = -this.vel;
     }
     if (this.x > 640) {
       this.y -= 5;
-      this.angle -= Math.PI;
+      //this.angle -= Math.PI;
+      this.vel = -this.vel;
     }
     if (this.y > 300) {
       this.y -= 5;
-      this.angle -= Math.PI;
+      //this.angle -= Math.PI;
+      this.vel = -this.vel;
     }
 
   },
@@ -108,27 +114,28 @@ Car.prototype = {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
-    ctx.fillStyle = "#777";
-    ctx.fillRect(-oneBlock, -oneBlock, oneBlock * 2, oneBlock * 3);
-    ctx.restore();
 
+    /*
+    if (this.isPlayer) {
+      ctx.strokeStyle = this.isPlayer ? "#7f7" : "#888";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, 12 + (Math.sin(Date.now() / 100)), 0, Math.PI * 2, false);
+      ctx.stroke();
+    }*/
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(-oneBlock - 1, -oneBlock - 1, oneBlock * 2 + 2, oneBlock * 3 + 2);
+    ctx.fillStyle = "#111";
+    ctx.fillRect(-oneBlock, -oneBlock - 2, oneBlock * 2, 2);
+    ctx.restore();
 
     this.active && this.body.forEach(function (p, i) {
       var row = i / 2 | 0;
       var col = i % 2;
       var op = row === 0 ? 60 : row === 2 ? 50 : 30;
       ctx.fillStyle = this.isPlayer ? "hsl(150,50%," + op + "%)" : "hsl(20,50%," + op + "%)";
-      //for (var j = 0; j < 6; j++) {
-      //  if (this.body[j][2]) {
-          ctx.fillRect(this.body[i][0], this.body[i][1], oneBlock, oneBlock);
-      //  }
-      //}
-      /*
-      ctx.strokeStyle = this.isPlayer ? "#0f0" : "#888";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 8, 0, Math.PI * 2, false);
-      ctx.stroke();*/
+      ctx.fillRect(this.body[i][0], this.body[i][1], oneBlock, oneBlock);
 
     }, this);
 

@@ -3,6 +3,8 @@
 ## TODO
 
 * tonnes of particles
+  * collisions
+  * smoke
 * tonnes of explosions
 * add steering force
 * shake

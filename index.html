@@ -9,14 +9,26 @@
       }
       body {
         margin: 0;
+
       }
       canvas {
-        background: #eee;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #board {
+        width: 640px;
+        height: 300px;
+        background-color: hsl(108, 9%, 35%);
       }
     </style>
   </head>
   <body>
-    <canvas id="canvas" width="640" height="300" />
+    <div id="board">
+      <canvas id="skids" width="640" height="300"></canvas>
+      <canvas id="canvas" width="640" height="300"></canvas>
+      <canvas id="particles" width="640" height="300"></canvas>
+    </div>
     <script src="src/Car.js"></script>
     <script src="src/Game.js"></script>
     <script src="src/main.js"></script>
