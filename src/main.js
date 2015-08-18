@@ -17,6 +17,27 @@ var main = {
     //p.globalAlpha = 0.1;
     //p.globalCompositeOperation = "lighter";
 
+    //p.fillStyle = "hsl(19,50%,50%)";
+    //p.globalCompositeOperation = "destination-in";
+    //p.fillRect(0, 0, p.w, p.h);
+    //p.strokeStyle = "hsl(19, 50%, 90%)";
+    p.strokeStyle = "hsla(20, 10%, 30%, 0.3)";
+    p.setLineDash([15, 30]);
+    p.lineWidth = 2;
+    for (var i = 0; i < p.w / 10 | 0; i++) {
+      p.beginPath();
+      p.moveTo(i * p.w / 10 | 0 + 30, 0);
+      p.lineTo(i * p.w / 10 | 0 + 30, p.h);
+      p.stroke();
+    }
+    for (var j = 0; j < p.h / 10 | 0; j++) {
+      p.beginPath();
+      p.moveTo(0, j * p.h / 10 + 20 | 0);
+      p.lineTo(p.w, j * p.h / 10 + 10 | 0);
+      p.stroke();
+    }
+
+
     var keys = {};
     document.addEventListener("keydown", function (e) {
       keys[e.which] = true;

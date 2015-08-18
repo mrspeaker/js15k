@@ -9,6 +9,7 @@ function Game () {
     if (i === 0) {
       c.x = 500 + 400;
       c.y=200 + 400;
+      c.angle = -Math.PI /2;
       return c;
     }
     c.x = Math.cos(i/3) * 120 + 300 + 400;
@@ -16,6 +17,8 @@ function Game () {
     //c.angle = Math.random() * Math.PI * 2;
     return c;
   });
+
+  this.splode = [];
 }
 Game.prototype = {
 
@@ -35,12 +38,17 @@ Game.prototype = {
       }, this);
     }, this);
 
+    this.splode = this.splode.filter(function (s) {
+      return s.update(dt);
+    });
+
     if (Math.random() < 0.01) {
     //  this.cars[Math.random() * this.cars.length | 0].acc = 2;
     }
   },
 
   render: function (c, p) {
+    c.globalCompositeOperation = "source-over";
     c.clearRect(0, 0, c.w, c.h);
 
     /*
@@ -76,9 +84,12 @@ Game.prototype = {
         p.fill();
       }
     });
+    c.globalCompositeOperation = "lighter";
+
+    this.splode.forEach(function (s) {
+      s.render(c);
+    });
     c.restore();
-
-
 
   },
 
@@ -100,6 +111,9 @@ Game.prototype = {
         if (Math.sqrt(dx * dx + dy * dy) < 4) {
           hits1.push(i);
           hits2.push(j);
+          this.splode.push(
+            new Particle(c1.x, c1.y, Math.random() * 10 | 0, Math.random() * 50)
+          );
         }
       }
     }
@@ -115,7 +129,7 @@ Game.prototype = {
       // nope...
       b2[hits2[0]] -=10;
       c2.acc = ((c1.velX + c1.velY) / 2) * 2;
-      c2.angAcc += (Math.random() - 0.5) * 1.5;
+      c2.angAcc += (Math.random() - 0.5) * 1;
       c2.angle += Math.PI * 2;
 
       if (j % 2 | 0 === 2 && b2[2] <= 0) {
