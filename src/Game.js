@@ -54,7 +54,7 @@ Game.prototype = {
       }
     }*/
 
-    //p.globalCompositeOperation = "source-over";
+    //p.globalCompositeOperation = "lighter";
     var center = [-this.cars[0].x + 320, -this.cars[0].y + 150];
     //center[0] = Math.max(0, center[0]);
     //center[1] = Math.max(0, center[1]);
@@ -63,12 +63,14 @@ Game.prototype = {
     //c.scale(2, 2);
     c.translate(center[0], center[1]);
     //p.translate(-this.cars[0].x + 320, -this.cars[0].y + 150);
-    p.fillStyle = "hsl(" + ((Math.random() * 30 | 0) + 200) + ", 10%, 30%)";
+    p.fillStyle = "hsla(" + ((Math.random() * 30 | 0) + 200) + ", 10%, 20%, 0.5)";
     this.cars.forEach(function (car) {
       car.render(c);
 
-      if (Math.abs(car.angVel) > 0 && Math.abs(car.vel) > 0) {
-        var s = Math.random() * (Math.min(10, Math.abs(car.angVel) * 10)) * (Math.abs(car.vel));
+      if (Math.abs(car.angVel) > 0 && (Math.abs(car.velX) > 0 && Math.abs(car.velY) > 0)) {
+        var s = Math.random() *
+          (Math.min(10, Math.abs(car.angVel) * 20)) *
+          (((Math.abs(car.velX) + Math.abs(car.velY)) / 2) * 1.5);
         p.beginPath();
         p.arc(car.x, car.y, s, 0, Math.PI * 2, false);
         p.fill();
@@ -107,12 +109,12 @@ Game.prototype = {
       if (now - c2.hitAt < 300) {
         return;
       }
-      console.log(hits1, hits2);
+      //console.log(hits1, hits2);
       c2.hitAt = now;
 
       // nope...
       b2[hits2[0]] -=10;
-      c2.acc = c1.vel;
+      c2.acc = ((c1.velX + c1.velY) / 2) * 2;
       c2.angAcc += (Math.random() - 0.5) * 1.5;
       c2.angle += Math.PI * 2;
 

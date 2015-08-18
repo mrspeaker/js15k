@@ -8,7 +8,8 @@ function Car () {
   this.w = 30;
   this.h = 50;
   this.angle = Math.PI;
-  this.vel = 0;
+  this.velX = 0;
+  this.velY = 0;
   this.acc = 0;
   this.angVel = 0;
   this.angAcc = 0;
@@ -53,10 +54,10 @@ Car.prototype = {
   },
   update: function (dt, keys, tick) {
 
-    var accThrust = 0.5;
+    var accThrust = 0.2;
     var angAccThrust = 0.009;
-    var drag = 0.99;
-    var angDrag = 0.88;
+    var drag = 0.95;
+    var angDrag = 0.8;
 
     if (this.active) {
       if (keys[38]) { this.acc += accThrust; }
@@ -69,40 +70,60 @@ Car.prototype = {
       }
     }
 
-    var velo = this.vel + this.acc;
-    this.vel = velo > 0 ? Math.min(velo, 3) : Math.max(velo, -3);
-    this.acc = 0;
-    this.vel *= drag;
+    /*var velo = this.velX + this.acc;
+    this.velX = velo > 0 ? Math.min(velo, 3) : Math.max(velo, -3);
+    velo = this.velY + this.acc;
+    this.velY = velo > 0 ? Math.min(velo, 3) : Math.max(velo, -3);*/
+
+    //this.acc = 0;
+    this.x += this.velX;
+    this.y += this.velY;
+    this.velX *= drag;
+    this.velY *= drag;
 
     this.angVel += this.angAcc;
-    this.angAcc = 0;
-    this.angVel *= angDrag;
     this.angle += this.angVel;
+    this.angVel *= angDrag;
+    this.angAcc = 0;
 
-    this.x += Math.cos(this.angle - Math.PI / 2) * this.vel;
-    this.y += Math.sin(this.angle - Math.PI / 2) * this.vel;
+    this.velX += Math.cos(this.angle - Math.PI / 2) * this.acc;
+    this.velY += Math.sin(this.angle - Math.PI / 2) * this.acc;
+
+    //this.x += Math.cos(this.angle - Math.PI / 2) * this.vel;
+    //this.y += Math.sin(this.angle - Math.PI / 2) * this.vel;
+
+
+    this.acc = 0;
+
     this.calcBody(tick);
 
     return;
     if (this.x < 0) {
       this.x += 5;
       //this.angle -= Math.PI;
-      this.vel = -this.vel;
+      this.velX = -this.velX;
+      this.velY = -this.velY;
     }
     if (this.y < 0) {
       this.y += 5;
       //this.angle -= Math.PI;
-      this.vel = -this.vel;
+      this.velX = -this.velX;
+      this.velY = -this.velY;
+
     }
     if (this.x > 640) {
       this.y -= 5;
       //this.angle -= Math.PI;
-      this.vel = -this.vel;
+      this.velX = -this.velX;
+      this.velY = -this.velY;
+
     }
     if (this.y > 300) {
       this.y -= 5;
       //this.angle -= Math.PI;
-      this.vel = -this.vel;
+      this.velX = -this.velX;
+      this.velY = -this.velY;
+
     }
 
   },
