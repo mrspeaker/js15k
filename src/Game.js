@@ -7,13 +7,13 @@ function Game () {
   })
   .map(function (c, i) {
     if (i === 0) {
-      c.x = 500 + 400;
-      c.y=200 + 400;
+      c.x = 500 + 900;
+      c.y=200 + 900;
       c.angle = -Math.PI /2;
       return c;
     }
-    c.x = Math.cos(i/3) * 120 + 300 + 400;
-    c.y = Math.sin(i/3) * 80 + 150 + 400;
+    c.x = Math.cos(i/3) * 120 + 300 + 900;
+    c.y = Math.sin(i/3) * 80 + 150 + 900;
     //c.angle = Math.random() * Math.PI * 2;
     return c;
   });

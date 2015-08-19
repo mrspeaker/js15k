@@ -1,7 +1,6 @@
 var oneBlock = 4;
 var halfBlock = oneBlock / 2;
 
-
 function Car () {
   this.x = 0;
   this.y = 0;
@@ -55,7 +54,7 @@ Car.prototype = {
   update: function (dt, keys, tick) {
 
     var accThrust = 0.2;
-    var angAccThrust = 0.009;
+    var angAccThrust = 0.01;
     var drag = 0.95;
     var angDrag = 0.8;
 
